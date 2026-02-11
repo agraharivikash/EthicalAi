@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Model Insights</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2 class="logo">Ethical AI</h2>
+        <ul class="menu">
+            <li onclick="location.href='/'">Dashboard</li>
+            <li class="active">Model Insights</li>
+            <li onclick="location.href='/logs'">Logs</li>
+        </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <h1>Model Insights & Explainability</h1>
+
+        <!-- MODEL OVERVIEW -->
+        <div class="card">
+            <h3>Model Overview</h3>
+            <p><strong>Name:</strong> {{ model.model_name }}</p>
+            <p><strong>Architecture:</strong> {{ model.architecture }}</p>
+            <p><strong>Parameters:</strong> {{ model.parameters }}</p>
+            <p><strong>Task:</strong> {{ model.task }}</p>
+            <p><strong>Tokenizer:</strong> {{ model.tokenizer }}</p>
+        </div>
+
+        <!-- HOW IT WORKS -->
+        <div class="card">
+            <h3>How the Model Works</h3>
+            <ol>
+                <li>User input is tokenized using WordPiece tokenizer</li>
+                <li>Tokens are converted into embeddings</li>
+                <li>Embeddings pass through transformer encoder layers</li>
+                <li>Classification head outputs SAFE / UNSAFE</li>
+            </ol>
+            <p>{{ model.decision_logic }}</p>
+        </div>
+
+        <!-- METRICS -->
+        <div class="card">
+            <h3>Model Performance</h3>
+            <canvas id="metricsChart"></canvas>
+        </div>
+
+        <!-- PIPELINE -->
+        <div class="card">
+            <h3>End-to-End Pipeline</h3>
+            <p>
+                Prompt → Gemini Output → NLP Filter Model → Risk Analysis →
+                Corrected Output → User
+            </p>
+        </div>
+
+    </main>
+</div>
+
+<script>
+new Chart(document.getElementById("metricsChart"), {
+    type: "bar",
+    data: {
+        labels: ["Accuracy", "Precision", "Recall", "F1 Score"],
+        datasets: [{
+            label: "Score",
+            data: [
+                {{ model.metrics.accuracy }},
+                {{ model.metrics.precision }},
+                {{ model.metrics.recall }},
+                {{ model.metrics.f1_score }}
+            ],
+            backgroundColor: "#2563eb"
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 1
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>

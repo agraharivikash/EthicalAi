@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logs | Ethical AI</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2 class="logo">Ethical AI</h2>
+        <ul class="menu">
+            <li onclick="location.href='/'">Dashboard</li>
+            <li class="active">Logs</li>
+            <li onclick="location.href='/logout'">Logout</li>
+        </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <h1>User Activity Logs</h1>
+
+        <!-- CHART -->
+        <div class="card">
+            <h3>Risk Score Trend</h3>
+            <canvas id="riskChart"></canvas>
+        </div>
+
+        <!-- TABLE -->
+        <div class="card">
+            <h3>Prompt History</h3>
+            <table class="log-table">
+                <tr>
+                    <th>Time</th>
+                    <th>Prompt</th>
+                    <th>Risk</th>
+                    <th>Corrected Output</th>
+                </tr>
+
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.timestamp.strftime("%d-%m %H:%M") }}</td>
+                    <td>{{ log.prompt }}</td>
+                    <td>{{ log.risk_score }}</td>
+                    <td>{{ log.corrected_output }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </main>
+</div>
+
+<script>
+const riskScores = {{ logs | map(attribute='risk_score') | list | tojson }};
+const labels = {{ logs | map(attribute='timestamp') | list | tojson }};
+
+new Chart(document.getElementById("riskChart"), {
+    type: "line",
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Risk Score",
+            data: riskScores,
+            borderColor: "#22c55e",
+            backgroundColor: "rgba(34,197,94,0.2)",
+            tension: 0.3
+        }]
+    }
+});
+</script>
+
+</body>
+</html>

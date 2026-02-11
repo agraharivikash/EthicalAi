@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Ethical Validator Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <h2 class="logo">Ethical AI</h2>
+        <ul class="menu">
+            <li class="active">Dashboard</li>
+            <li>Prompt Validator</li>
+            <li onclick="location.href='/model-insights'">Model Insights</li>
+
+            <li onclick="location.href='/logs'">Logs</li>
+            <li>Settings</li>
+            <li onclick="location.href='/logout'">Logout</li>
+        </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="header">
+            <h1>AI Output Validation Dashboard</h1>
+            <span class="status">LLM Safety Monitor</span>
+        </header>
+
+        <!-- PROMPT INPUT -->
+        <section class="prompt-box">
+            <textarea id="prompt" placeholder="Enter prompt for Gemini..."></textarea>
+            <button onclick="generate()">Generate & Validate</button>
+        </section>
+
+        <!-- DASHBOARD CARDS -->
+        <section class="cards">
+
+            <div class="card">
+                <h3>Gemini Output</h3>
+                <div id="raw_output" class="text-output">Waiting for output...</div>
+            </div>
+
+            <div class="card">
+                <h3>Filter Result</h3>
+                <div id="filter_result" class="text-output">—</div>
+            </div>
+
+            <div class="card highlight">
+                <h3>Corrected Output</h3>
+                <div id="corrected_output" class="text-output">—</div>
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="/static/script.js"></script>
+</body>
+</html>
